@@ -3,9 +3,10 @@ package com.vishnu.junitexample.coroutines
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.vishnu.junitexample.coroutines.DummyData
-import com.vishnu.junitexample.coroutines.MyUseCase
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 class MyViewModel(private val myUseCase: MyUseCase) : ViewModel(),CoroutineScope {
@@ -24,9 +25,6 @@ class MyViewModel(private val myUseCase: MyUseCase) : ViewModel(),CoroutineScope
     }
 
     fun getData():LiveData<DummyData> = data
-
-
-
 
     override fun onCleared() {
         super.onCleared()

@@ -1,27 +1,21 @@
 package com.vishnu.junitexample.coroutines
 
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kotlin.math.sqrt
 
-class MyUseCase(private val repository: MyRepository) {
-
-    suspend fun getData(): DummyData {
-        repository.doSomething()
-        return DummyData()
-    }
-
-    /**********************************************************************************************/
+class MyUseCaseWithInjectedDispatcher(private val repository: MyRepository,private val dispatcher: CoroutineDispatcher) {
 
     suspend fun heavyOperation(): Long {
-        return withContext(Dispatchers.Default) {
+        return withContext(dispatcher) {
             return@withContext doHardMaths()
         }
     }
 
     suspend fun heavyOperationWithDelay(): Long {
-        return withContext(Dispatchers.Default) {
+        return withContext(dispatcher) {
             delay(15_000)
             return@withContext doHardMaths()
         }
