@@ -40,7 +40,7 @@ class MyUseCaseWithInjectedDispatcherTest {
 
     /*************************TESTING COROUTINES WITH runBlockingTest******************************/
     @Test
-    fun heavyOperation() {
+    fun `test heavyOperation`() {
         runBlockingTest {
             val expected = 666666671666
             val result = myUseCase.heavyOperation()
@@ -53,7 +53,7 @@ class MyUseCaseWithInjectedDispatcherTest {
 
     /*************************TESTING COROUTINES WITH runBlockingTest******************************/
     @Test
-    fun heavyOperationWithDelay() {
+    fun `test heavyOperationWithDelay`() {
         runBlockingTest {
             val expected = 666666671666
             val result = myUseCase.heavyOperationWithDelay()
@@ -66,7 +66,7 @@ class MyUseCaseWithInjectedDispatcherTest {
 
     /********************TESTING COROUTINES WITH dispatcher.runBlockingTest************************/
     @Test
-    fun heavyOperationWithDelay2() {
+    fun `test heavyOperationWithDelay2`() {
         dispatcher.runBlockingTest {
             val expected = 666666671666
             val result = myUseCase.heavyOperationWithDelay()

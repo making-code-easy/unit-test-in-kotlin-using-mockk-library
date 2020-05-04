@@ -1,7 +1,5 @@
 package com.vishnu.junitexample.coroutines
 
-import com.vishnu.junitexample.coroutines.MyRepository
-import com.vishnu.junitexample.coroutines.MyUseCase
 import io.mockk.*
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.Dispatchers
@@ -12,9 +10,8 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Test
-
 import org.junit.Before
+import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class MyUseCaseTest {
@@ -22,11 +19,19 @@ class MyUseCaseTest {
     private lateinit var repository: MyRepository
     private lateinit var myUseCase: MyUseCase
 
+
+    private lateinit var repositoryNew: MyRepository
+    private lateinit var myUseCaseNew: MyUseCase
+
     @Before
     fun setUp() {
         Dispatchers.setMain(TestCoroutineDispatcher())
-        repository = mockk(relaxed = true)
+        repository = mockk()
         myUseCase = spyk(MyUseCase(repository))
+
+
+        repositoryNew = mockk(relaxed = true)
+        myUseCaseNew = spyk(MyUseCase(repositoryNew))
     }
 
     @After
@@ -35,19 +40,46 @@ class MyUseCaseTest {
         unmockkAll()
     }
 
+    /****************WILL THROW io.mockk.MockKException: no answer found***************************/
     @Test
-    fun getData() {
+    fun `test getData`() {
         runBlockingTest {
             myUseCase.getData()
             coVerify { repository.doSomething() }
         }
-
     }
+    /**********************************************************************************************/
+
+    /*************************HANDEL ABOVE EXCEPTION WITH coEvery**********************************/
+    @Test
+    fun `test getData2`() {
+        runBlockingTest {
+            coEvery { repository.doSomething() } just runs
+            myUseCase.getData()
+            coVerify { repository.doSomething() }
+        }
+    }
+    /**********************************************************************************************/
+
+
+    /*************HANDEL ABOVE EXCEPTION by making relaxed repository object **********************/
+    @Test
+    fun `test getData3`() {
+        runBlockingTest {
+            myUseCaseNew.getData()
+            coVerify { repositoryNew.doSomething() }
+        }
+    }
+    /**********************************************************************************************/
+
+
+
+
 
 
     /*************************TESTING COROUTINES WITH runBlocking**********************************/
     @Test
-    fun heavyOperation() {
+    fun `test heavyOperation`() {
         runBlocking {//will run normally, takes required time
 
             val expected = 666666671666
@@ -60,7 +92,7 @@ class MyUseCaseTest {
 
     /*************************TESTING COROUTINES WITH runBlocking**********************************/
     @Test
-    fun heavyOperationWithDelay() {
+    fun `test heavyOperationWithDelay`() {
         runBlocking {//will run normally, takes required time 15 seconds to run
 
             val expected = 666666671666
@@ -73,7 +105,7 @@ class MyUseCaseTest {
 
     /*************************TESTING COROUTINES WITH runBlockingTest******************************/
     @Test
-    fun heavyOperation2() {
+    fun `test heavyOperation2`() {
         runBlockingTest {//will run by autoAdvancing time, runs fast
 
             val expected = 666666671666

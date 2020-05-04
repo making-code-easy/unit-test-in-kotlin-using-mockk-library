@@ -11,7 +11,7 @@ class CalculatorTest {
 
     /*********************WILL THROW io.mockk.MockKException: no answer found *********************/
     @Test
-    fun divide() {
+    fun `test divide`() {
         val calculator = mockk<Calculator>() //To mockk object to test
         val result = calculator.divide(10, 2)
         assertEquals(5, result) // To assert the value
@@ -21,7 +21,7 @@ class CalculatorTest {
 
     /**********************************HANDLING ABOVE EXCEPTION************************************/
     @Test
-    fun divide2() {
+    fun `test divide1`() {
         val calculator = mockk<Calculator>(relaxed = true) // relaxed is used to provide default answer on mockk
         val result = calculator.divide(10, 2)
         assertEquals(0, result)
@@ -31,7 +31,7 @@ class CalculatorTest {
 
     /***********************************SOLVING THIS EXCEPTION*************************************/
     @Test
-    fun divide3() {
+    fun `test divide3`() {
         val calculator = mockk<Calculator>()
         every { calculator.divide(any(), any()) } returns 5 // every used to provide mock defination
                                                             //any() is matchers which can be used to
@@ -44,7 +44,7 @@ class CalculatorTest {
 
     /***********************************THROWING CODE EXCEPTION*************************************/
     @Test
-    fun divide4() {
+    fun `test divide4`() {
         val calculator = spyk(Calculator()) // It creates object with empty variable
                                                      // used when to real class
         val result = calculator.divide(10, 0)
@@ -54,7 +54,7 @@ class CalculatorTest {
 
     /***********************************HANDLING ABOVE EXCEPTION*************************************/
     @Test(expected = ArithmeticException::class) // expected used to assert exception
-    fun divide5() {
+    fun `test divide5`() {
         val calculator = spyk(Calculator())
         calculator.divide(10, 0)
     }
@@ -63,7 +63,7 @@ class CalculatorTest {
 
     /***********************************VERIFYING METHOD CALLS*************************************/
     @Test
-    fun divide6() {
+    fun `test divide6`() {
         val calculator = mockk<Calculator>()
         every { calculator.divide(any(), any()) } returns 5
         calculator.divide(10,2)
@@ -75,7 +75,7 @@ class CalculatorTest {
 
     /***********************************VERIFY WITH EXACTLY 0 TIMES********************************/
     @Test
-    fun divide7() {
+    fun `test divide7`() {
         val calculator = mockk<Calculator>()
         every { calculator.redirectDivide(10,0) } just runs
         calculator.redirectDivide(10, 0)
@@ -86,7 +86,7 @@ class CalculatorTest {
 
     /***********************************VERIFY WITH EXACTLY 2 TIMES********************************/
     @Test
-    fun divide8() {
+    fun `test divide8`() {
         val calculator = spyk(Calculator())
         calculator.redirectDivide(10, 2)
         calculator.redirectDivide(10, 2)
@@ -97,7 +97,7 @@ class CalculatorTest {
 
     /*****************io.mockk.MockKException: Missing calls inside every { ... } block*************/
     @Test
-    fun sendEvent(){
+    fun `test sendEvent`(){
         val calculator = mockk<Calculator>()
         every { MockStaticExample.showMessage() } just runs
         calculator.sendEvent()
@@ -109,7 +109,7 @@ class CalculatorTest {
 
     /*********************************HANDLING ABOVE EXCEPTION**************************************/
     @Test
-    fun sendEvent2() {
+    fun `test sendEvent2`() {
         val calculator = mockk<Calculator>()
         mockkStatic(MockStaticExample::class)  // mockkStatic used to mockk static class
         every { MockStaticExample.showMessage() } just runs

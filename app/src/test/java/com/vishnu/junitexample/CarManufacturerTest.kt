@@ -26,7 +26,7 @@ class CarManufacturerTest {
 
     /*********io.mockk.MockKException: Can't instantiate proxy for class kotlin.String*************/
     @Test
-    fun returnCarName() {
+    fun `test returnCarName`() {
         val cm = mockk<CarManufacturer>()
         every { cm.returnCarName() } returns mockk()
         cm.returnCarName()
@@ -36,7 +36,7 @@ class CarManufacturerTest {
 
     /**********************************HANDLING ABOVE EXCEPTION************************************/
     @Test
-    fun returnCarName2() {
+    fun `test returnCarName2`() {
         val cm = mockk<CarManufacturer>()
         every { cm.returnCarName() } returns "audi"
         val result = cm.returnCarName()
@@ -48,7 +48,7 @@ class CarManufacturerTest {
 
     /*******************************USE OF mockkConstructor*****************************************/
     @Test
-    fun getCar() {
+    fun `test getCar`() {
         mockkConstructor(Car::class)
         every {
             anyConstructed<Car>().color
@@ -61,7 +61,7 @@ class CarManufacturerTest {
 
     /*********************WILL THROW io.mockk.MockKException: no answer found *********************/
     @Test
-    fun getCarWithEngine1() {
+    fun `test getCarWithEngine1`() {
         mockkConstructor(Car::class)
         val engine = mockk<Engine>()
 
@@ -79,7 +79,7 @@ class CarManufacturerTest {
 
     /**************************ONE WAY TO HANDLE ABOVE EXCEPTION************************************/
     @Test
-    fun getCarWithEngine2() {
+    fun `test getCarWithEngine2`() {
         mockkConstructor(Car::class)
         val engine = Engine()
 
@@ -97,7 +97,7 @@ class CarManufacturerTest {
 
     /**************************SECOND WAY TO HANDLE ABOVE EXCEPTION********************************/
     @Test
-    fun getCarWithEngine3() {
+    fun `test getCarWithEngine3`() {
         mockkConstructor(Car::class)
 
         val engine = mockk<Engine>()
@@ -118,7 +118,7 @@ class CarManufacturerTest {
 
     /**********************************USE OF CHAINED CALLS****************************************/
     @Test
-    fun getCarWithEngine4() {
+    fun `test getCarWithEngine4`() {
         mockkConstructor(Car::class)
         every {
             anyConstructed<Car>().engine.power
@@ -133,7 +133,7 @@ class CarManufacturerTest {
 
     /****************************TEST PRIVATE VARIABLE BY MAKING GETTER****************************/
     @Test
-    fun myCarName() {
+    fun `test myCarName`() {
         carManufacturer.showCarName("BMW")
         assertEquals("BMW", carManufacturer.myCarNameByGetter)
 
@@ -143,7 +143,7 @@ class CarManufacturerTest {
 
     /****************************TEST PRIVATE VARIABLE BY CAPTURING SLOT****************************/
     @Test
-    fun myCarName2() {
+    fun `tes myCarName2`() {
         val slot = slot<String>()
         var myCarNme = ""
 
@@ -154,7 +154,7 @@ class CarManufacturerTest {
     }
 
     @Test
-    fun myCarNam3() {
+    fun `test myCarNam3`() {
         val slot = slot<String>()
         every { carManufacturer.showCarName2(capture(slot)) } just runs
         carManufacturer.showCarName2("AUDI")
