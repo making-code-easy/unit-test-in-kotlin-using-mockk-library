@@ -5,4 +5,4 @@ Contains all the exmaple, which we needs to check, before writing any test case.
 
 Also added example on testing coroutines.
 
-Be with me, Also add more exmaples on testing coroutines.
+Be with me, Also add more examples on testing coroutines.
