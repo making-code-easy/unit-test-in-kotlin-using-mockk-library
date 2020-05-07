@@ -1,5 +1,6 @@
 package com.vishnu.junitexample
 
+import com.vishnu.junitexample.calculator.Calculator
 import com.vishnu.junitexample.coroutines.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.runner.RunWith

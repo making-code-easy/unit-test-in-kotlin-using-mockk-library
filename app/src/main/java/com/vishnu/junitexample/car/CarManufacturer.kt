@@ -4,10 +4,11 @@ class CarManufacturer {
     private val colorProducer = ColorProducer()
     private val myCar = Car()
 
+    private var myCarName =""
+
     var myCarNameByGetter = ""
         get() = field
         private set
-    private var myCarNameBySlotCapturing = ""
 
     fun getCar(): Car {
         val car = Car()
@@ -28,12 +29,13 @@ class CarManufacturer {
         myCar.speed = car
     }
 
-    fun showCarName(name: String) {
+    fun initializeCarNameOnPrivateVariable(name: String) {
+        myCarName = name
+    }
+    fun initializeCarNameOnPrivateVariablePublicGetter(name: String) {
         myCarNameByGetter = name
     }
-    fun showCarName2(name: String) {
-        myCarNameBySlotCapturing = name
-    }
+
 
     fun returnCarName() = ""
 

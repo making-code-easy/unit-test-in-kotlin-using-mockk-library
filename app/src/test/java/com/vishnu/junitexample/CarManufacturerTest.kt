@@ -28,7 +28,9 @@ class CarManufacturerTest {
     @Test
     fun `test returnCarName`() {
         val cm = mockk<CarManufacturer>()
+
         every { cm.returnCarName() } returns mockk()
+
         cm.returnCarName()
     }
     /**********************************************************************************************/
@@ -38,7 +40,9 @@ class CarManufacturerTest {
     @Test
     fun `test returnCarName2`() {
         val cm = mockk<CarManufacturer>()
+
         every { cm.returnCarName() } returns "audi"
+
         val result = cm.returnCarName()
         assertEquals("audi", result)
     }
@@ -50,11 +54,11 @@ class CarManufacturerTest {
     @Test
     fun `test getCar`() {
         mockkConstructor(Car::class)
-        every {
-            anyConstructed<Car>().color
-        } returns "blue"
+        every { anyConstructed<Car>().color } returns "blue"
 
-        assertEquals("blue", carManufacturer.getCar().color)
+        val car = carManufacturer.getCar()
+
+        assertEquals("blue", car.color)
     }
     /**********************************************************************************************/
 
@@ -64,12 +68,11 @@ class CarManufacturerTest {
     fun `test getCarWithEngine1`() {
         mockkConstructor(Car::class)
         val engine = mockk<Engine>()
-
         engine.power = 200
 
         every { anyConstructed<Car>().engine } returns engine
 
-        val result = carManufacturer.getCar()
+        val result = carManufacturer.getCarWithEngine()
 
         assertEquals(200, result.engine.power)
 
@@ -82,12 +85,11 @@ class CarManufacturerTest {
     fun `test getCarWithEngine2`() {
         mockkConstructor(Car::class)
         val engine = Engine()
-
         engine.power = 200
 
         every { anyConstructed<Car>().engine } returns engine
 
-        val result = carManufacturer.getCar()
+        val result = carManufacturer.getCarWithEngine()
 
         assertEquals(200, result.engine.power)
 
@@ -99,16 +101,13 @@ class CarManufacturerTest {
     @Test
     fun `test getCarWithEngine3`() {
         mockkConstructor(Car::class)
-
         val engine = mockk<Engine>()
 
         every { engine.power } returns 200
 
-        every {
-            anyConstructed<Car>().engine
-        } returns engine
+        every { anyConstructed<Car>().engine } returns engine
 
-        val result = carManufacturer.getCar()
+        val result = carManufacturer.getCarWithEngine()
 
         assertEquals(200, result.engine.power)
 
@@ -120,13 +119,21 @@ class CarManufacturerTest {
     @Test
     fun `test getCarWithEngine4`() {
         mockkConstructor(Car::class)
-        every {
-            anyConstructed<Car>().engine.power
-        } returns 200
+        every { anyConstructed<Car>().engine.power } returns 200
 
-        val result = carManufacturer.getCar()
+        val result = carManufacturer.getCarWithEngine()
 
         assertEquals(200, result.engine.power)
+    }
+    /**********************************************************************************************/
+
+
+    /******************************TEST PRIVATE VARIABLE*******************************************/
+    @Test
+    fun `test myCarName1`() {
+        carManufacturer.initializeCarNameOnPrivateVariable("BMW")
+        assertEquals("BMW", carManufacturer)
+
     }
     /**********************************************************************************************/
 
@@ -134,7 +141,7 @@ class CarManufacturerTest {
     /****************************TEST PRIVATE VARIABLE BY MAKING GETTER****************************/
     @Test
     fun `test myCarName`() {
-        carManufacturer.showCarName("BMW")
+        carManufacturer.initializeCarNameOnPrivateVariablePublicGetter("BMW")
         assertEquals("BMW", carManufacturer.myCarNameByGetter)
 
     }
@@ -147,8 +154,8 @@ class CarManufacturerTest {
         val slot = slot<String>()
         var myCarNme = ""
 
-        every { carManufacturer.showCarName2(capture(slot)) } answers { myCarNme = slot.captured }
-        carManufacturer.showCarName2("AUDI")
+        every { carManufacturer.initializeCarNameOnPrivateVariable(capture(slot)) } answers { myCarNme = slot.captured }
+        carManufacturer.initializeCarNameOnPrivateVariable("AUDI")
         assertEquals("AUDI", myCarNme)
 
     }
@@ -156,8 +163,8 @@ class CarManufacturerTest {
     @Test
     fun `test myCarNam3`() {
         val slot = slot<String>()
-        every { carManufacturer.showCarName2(capture(slot)) } just runs
-        carManufacturer.showCarName2("AUDI")
+        every { carManufacturer.initializeCarNameOnPrivateVariable(capture(slot)) } just runs
+        carManufacturer.initializeCarNameOnPrivateVariable("AUDI")
         assertEquals("AUDI", slot.captured)
 
     }

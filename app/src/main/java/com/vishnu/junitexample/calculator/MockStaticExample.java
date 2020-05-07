@@ -1,4 +1,4 @@
-package com.vishnu.junitexample;
+package com.vishnu.junitexample.calculator;
 
 public class MockStaticExample {
     static void showMessage(){
