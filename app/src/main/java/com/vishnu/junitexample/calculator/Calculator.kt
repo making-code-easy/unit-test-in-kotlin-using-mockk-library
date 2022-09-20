@@ -11,18 +11,10 @@ class Calculator(private val calculatorHelper: CalculatorHelper) {
               calculatorHelper.divide(num1, num2)
         }
     }
-fun divide2(num1: Int, num2: Int): String {
-        return if (num2 == 0) {
-            throw ArithmeticException("can not divide by zero")
-        } else {
-              calculatorHelper.divide2(num1, num2)
-        }
-    }
 
-    fun redirectDivide(num1: Int, num2: Int) {
-        divide(num1, num2)
+    fun divide31(num1: Int): Int {
+        return calculatorHelper.divide(num1, 2)
     }
-
 
     fun sendEvent() {
         MockStaticExample.showMessage()

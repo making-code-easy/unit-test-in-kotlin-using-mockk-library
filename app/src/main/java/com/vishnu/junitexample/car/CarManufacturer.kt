@@ -1,8 +1,9 @@
 package com.vishnu.junitexample.car
 
-class CarManufacturer {
+class CarManufacturer(private val carManufacturerHelper: CarManufacturerHelper) {
     private val colorProducer = ColorProducer()
     private val myCar = Car()
+    private val engine = Engine()
 
     private var myCarName =""
 
@@ -18,7 +19,6 @@ class CarManufacturer {
     }
     fun getCarWithEngine(): Car {
         val car = Car()
-        val engine = Engine()
         engine.power = 120
         car.engine = engine
         return car
@@ -37,7 +37,7 @@ class CarManufacturer {
     }
 
 
-    fun returnCarName() = ""
+    fun getCarName() = carManufacturerHelper.getCarName()
 
     /***********************************************************************************************/
 

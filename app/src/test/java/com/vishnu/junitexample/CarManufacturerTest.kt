@@ -2,6 +2,7 @@ package com.vishnu.junitexample
 
 import com.vishnu.junitexample.car.Car
 import com.vishnu.junitexample.car.CarManufacturer
+import com.vishnu.junitexample.car.CarManufacturerHelper
 import com.vishnu.junitexample.car.Engine
 import io.mockk.*
 import org.junit.After
@@ -13,25 +14,26 @@ import org.junit.Assert.*
 class CarManufacturerTest {
 
     private lateinit var carManufacturer: CarManufacturer
+    private lateinit var carManufacturerHelper: CarManufacturerHelper
 
     @Before
     fun setUp() {
-        carManufacturer = spyk(CarManufacturer())
+        carManufacturerHelper = mockk()
+        carManufacturer = spyk(CarManufacturer(carManufacturerHelper))
     }
 
     @After
     fun tearDown() {
-
+        unmockkAll()
     }
 
     /*********io.mockk.MockKException: Can't instantiate proxy for class kotlin.String*************/
     @Test
-    fun `test returnCarName`() {
-        val cm = mockk<CarManufacturer>()
+    fun `test getCarName`() {
 
-        every { cm.returnCarName() } returns mockk()
+        every { carManufacturerHelper.getCarName() } returns mockk()
 
-        cm.returnCarName()
+        carManufacturer.getCarName()
     }
     /**********************************************************************************************/
 
@@ -39,11 +41,10 @@ class CarManufacturerTest {
     /**********************************HANDLING ABOVE EXCEPTION************************************/
     @Test
     fun `test returnCarName2`() {
-        val cm = mockk<CarManufacturer>()
 
-        every { cm.returnCarName() } returns "audi"
+        every { carManufacturerHelper.getCarName() } returns "audi"
 
-        val result = cm.returnCarName()
+        val result = carManufacturer.getCarName()
         assertEquals("audi", result)
     }
 
@@ -55,10 +56,11 @@ class CarManufacturerTest {
     fun `test getCar`() {
         mockkConstructor(Car::class)
         every { anyConstructed<Car>().color } returns "blue"
+        every { anyConstructed<Car>().name } returns "audi"
 
         val car = carManufacturer.getCar()
 
-        assertEquals("blue", car.color)
+        assertEquals("audi", car.name)
     }
     /**********************************************************************************************/
 
@@ -119,7 +121,7 @@ class CarManufacturerTest {
     @Test
     fun `test getCarWithEngine4`() {
         mockkConstructor(Car::class)
-        every { anyConstructed<Car>().engine.power } returns 200
+        every { anyConstructed<Car>().engine.power} returns 200
 
         val result = carManufacturer.getCarWithEngine()
 
@@ -155,7 +157,9 @@ class CarManufacturerTest {
         var myCarNme = ""
 
         every { carManufacturer.initializeCarNameOnPrivateVariable(capture(slot)) } answers { myCarNme = slot.captured }
+
         carManufacturer.initializeCarNameOnPrivateVariable("AUDI")
+
         assertEquals("AUDI", myCarNme)
 
     }

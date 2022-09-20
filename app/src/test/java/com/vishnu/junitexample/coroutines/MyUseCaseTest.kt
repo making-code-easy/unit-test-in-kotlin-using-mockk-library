@@ -30,8 +30,8 @@ class MyUseCaseTest {
         myUseCase = spyk(MyUseCase(repository))
 
 
-        repositoryNew = mockk(relaxed = true)
-        myUseCaseNew = spyk(MyUseCase(repositoryNew))
+//        repositoryNew = mockk(relaxed = true)
+//        myUseCaseNew = spyk(MyUseCase(repositoryNew))
     }
 
     @After

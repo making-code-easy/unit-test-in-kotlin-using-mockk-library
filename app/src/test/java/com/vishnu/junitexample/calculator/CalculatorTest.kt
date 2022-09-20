@@ -1,13 +1,8 @@
 package com.vishnu.junitexample.calculator
 
-import com.vishnu.junitexample.calculator.Calculator
-import com.vishnu.junitexample.calculator.CalculatorHelper
-import com.vishnu.junitexample.calculator.MockStaticExample
 import io.mockk.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
-import java.lang.ArithmeticException
 
 class CalculatorTest {
 
@@ -15,11 +10,14 @@ class CalculatorTest {
     /*********************WILL THROW io.mockk.MockKException: no answer found *********************/
     @Test
     fun `test divide`() {
+        //2.provide definition
         val calculatorHelper = mockk<CalculatorHelper>()
         val calculator = spyk(Calculator(calculatorHelper))
 
+        //1.calling test function
         val result = calculator.divide(10, 2)
 
+        //3.verify result
         assertEquals(5, result) // To assert the value
     }
     /**********************************************************************************************/
@@ -28,30 +26,58 @@ class CalculatorTest {
     /**********************************HANDLING ABOVE EXCEPTION************************************/
     @Test
     fun `test divide1`() {
-        val calculatorHelper = mockk<CalculatorHelper>(relaxed = true) // relaxed is used to provide default answer on mockk
+        val calculatorHelper =
+            mockk<CalculatorHelper>(relaxed = true) // relaxed is used to provide default answer on mockk
         val calculator = spyk(Calculator(calculatorHelper))
 
         val result = calculator.divide(10, 2)
 
         assertEquals(0, result)
-        verify { calculatorHelper.divide(any(),any()) }
+        verify { calculatorHelper.divide(any(), any()) }
     }
     /**********************************************************************************************/
 
 
     /***********************************SOLVING THIS EXCEPTION*************************************/
+
+
     @Test
     fun `test divide3`() {
         val calculatorHelper = mockk<CalculatorHelper>()
         val calculator = spyk(Calculator(calculatorHelper))
 
-        every { calculatorHelper.divide(any(), any()) } returns 5 // every used to provide mock defination
+        every {
+            calculatorHelper.divide(
+                any(),
+                any()
+            )
+        } returns 5 // every used to provide mock defination
         //any() is matchers which can be used to
         // replace any parameter in every
 
         val result = calculator.divide(10, 2)
         assertEquals(5, result)
     }
+
+    @Test
+    fun `test divide31`() {
+        val calculatorHelper = mockk<CalculatorHelper>()
+        val calculator = spyk(Calculator(calculatorHelper))
+
+        every {
+            calculatorHelper.divide(
+                any(),
+                2
+            )
+        } returns 5 // every used to provide mock defination
+        //any() is matchers which can be used to
+        // replace any parameter in every
+
+        val result = calculator.divide31(10)
+
+        assertEquals(5, result)
+    }
+
     /**********************************************************************************************/
 
 
@@ -99,7 +125,12 @@ class CalculatorTest {
         every { calculator.divide(10, 0) } returns 0
 
         calculator.divide(10, 0)
-        verify(exactly = 0) { calculatorHelper.divide(any(), any()) }// exactly is used to test check call count
+        verify(exactly = 0) {
+            calculatorHelper.divide(
+                any(),
+                any()
+            )
+        }// exactly is used to test check call count
     }
     /**********************************************************************************************/
 
@@ -107,7 +138,7 @@ class CalculatorTest {
     /***********************************VERIFY WITH EXACTLY 2 TIMES********************************/
     @Test
     fun `test divide8`() {
-        val calculatorHelper = mockk<CalculatorHelper>(relaxed = true)
+        val calculatorHelper = mockk<CalculatorHelper>()
         val calculator = spyk(Calculator(calculatorHelper))
 
         calculator.divide(10, 2)
@@ -119,14 +150,18 @@ class CalculatorTest {
 
     /*****************io.mockk.MockKException: Missing calls inside every { ... } block*************/
     @Test
-    fun `test sendEvent`(){
+    fun `test sendEvent`() {
+        //2. provide definition
         val calculatorHelper = mockk<CalculatorHelper>()
         val calculator = spyk(Calculator(calculatorHelper))
 
         every { MockStaticExample.showMessage() } just runs
 
+        //1.calling test function
         calculator.sendEvent()
-        verify { MockStaticExample.showMessage()  }
+
+        //3.verify
+        verify { MockStaticExample.showMessage() }
 
     }
     /**********************************************************************************************/
@@ -142,7 +177,7 @@ class CalculatorTest {
         every { MockStaticExample.showMessage() } just runs
 
         calculator.sendEvent()
-        verify { MockStaticExample.showMessage()  }
+        verify { MockStaticExample.showMessage() }
 
     }
     /**********************************************************************************************/
